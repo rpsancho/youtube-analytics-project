@@ -5,6 +5,7 @@ import os
 from googleapiclient.discovery import build
 
 import isodate
+from datetime import datetime
 
 
 # YT_API_KEY скопирован из гугла и вставлен в переменные окружения
@@ -16,7 +17,7 @@ youtube = build('youtube', 'v3', developerKey=api_key)
 
 def printj(dict_to_print: dict) -> None:
     """Выводит словарь в json-подобном удобном формате с отступами"""
-    print(json.dumps(dict_to_print, indent=2, ensure_ascii=False))
+    # print(json.dumps(dict_to_print, indent=2, ensure_ascii=False))
 
 
 '''
@@ -28,7 +29,7 @@ docs: https://developers.google.com/youtube/v3/docs/channels/list
 # channel_id = 'UC-OVMPlMA3-YCIeg4z5z23A'  # MoscowPython
 channel_id = 'UCwHL6WHUarjGfUM_586me8w'  # HighLoad Channel
 channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
-printj(channel)
+# printj(channel)
 
 
 '''
@@ -40,9 +41,9 @@ playlists = youtube.playlists().list(channelId=channel_id,
                                      maxResults=50,
                                      ).execute()
 # printj(playlists)
-for playlist in playlists['items']:
-    print(playlist)
-    print()
+# for playlist in playlists['items']:
+#     print(playlist)
+#     print()
 
 
 '''
@@ -62,7 +63,7 @@ playlist_videos = youtube.playlistItems().list(playlistId=playlist_id,
 
 # получить все id видеороликов из плейлиста
 video_ids: list[str] = [video['contentDetails']['videoId'] for video in playlist_videos['items']]
-# print(video_ids)
+print(video_ids)
 
 
 '''
@@ -78,6 +79,10 @@ for video in video_response['items']:
     # YouTube video duration is in ISO 8601 format
     iso_8601_duration = video['contentDetails']['duration']
     duration = isodate.parse_duration(iso_8601_duration)
+    duration.total_seconds()
+    datetime_dur = datetime.strptime(str(duration), "%H:%M:%S")
+
+    print(datetime_dur)
     print(duration)
 
 

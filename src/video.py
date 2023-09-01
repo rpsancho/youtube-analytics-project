@@ -1,12 +1,10 @@
-import os
-from googleapiclient.discovery import build
+from src.youtube_mixin import YoutubeMixin
 
 
-class Video:
-
-    api_key: str = os.getenv('YT_API_KEY')
+class Video(YoutubeMixin):
 
     def __init__(self, video_id: str):
+        super().__init__()
         self.__video_id = video_id
         self.__init_from_api()
 
@@ -28,10 +26,10 @@ class Video:
     def video_id(self):
         return self.__video_id
 
-    @classmethod
-    def get_service(cls):
-        service = build('youtube', 'v3', developerKey=cls.api_key)
-        return service
+    # @classmethod
+    # def get_service(cls):
+    #     service = build('youtube', 'v3', developerKey=cls.api_key)
+    #     return service
 
 
 class PLVideo(Video):

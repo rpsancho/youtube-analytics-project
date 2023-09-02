@@ -15,7 +15,7 @@ class Video(YoutubeMixin):
         ).execute()
         self.title = video_info['items'][0]['snippet']['title']
         self.description = video_info['items'][0]['snippet']['description']
-        self.url = f'https://www.youtube.com/watch?v={self.__video_id}'
+        self.url = f'https://youtu.be/{self.__video_id}'
         self.view_count = video_info['items'][0]['statistics']['viewCount']
         self.like_count = video_info['items'][0]['statistics']['likeCount']
 
@@ -25,11 +25,6 @@ class Video(YoutubeMixin):
     @property
     def video_id(self):
         return self.__video_id
-
-    # @classmethod
-    # def get_service(cls):
-    #     service = build('youtube', 'v3', developerKey=cls.api_key)
-    #     return service
 
 
 class PLVideo(Video):

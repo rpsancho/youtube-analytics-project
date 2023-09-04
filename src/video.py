@@ -9,15 +9,22 @@ class Video(YoutubeMixin):
         self.__init_from_api()
 
     def __init_from_api(self):
-        video_info = self.get_service().videos().list(
-            part='snippet,statistics',
-            id=self.__video_id
-        ).execute()
-        self.title = video_info['items'][0]['snippet']['title']
-        self.description = video_info['items'][0]['snippet']['description']
-        self.url = f'https://youtu.be/{self.__video_id}'
-        self.view_count = video_info['items'][0]['statistics']['viewCount']
-        self.like_count = video_info['items'][0]['statistics']['likeCount']
+        try:
+            video_info = self.get_service().videos().list(
+                part='snippet,statistics',
+                id=self.__video_id
+            ).execute()
+            self.title = video_info['items'][0]['snippet']['title']
+            self.description = video_info['items'][0]['snippet']['description']
+            self.url = f'https://youtu.be/{self.__video_id}'
+            self.view_count = video_info['items'][0]['statistics']['viewCount']
+            self.like_count = video_info['items'][0]['statistics']['likeCount']
+        except IndexError:
+            self.title = None
+            self.description = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
 
     def __str__(self):
         return f"{self.title}"
